@@ -2,16 +2,17 @@ name: Static QA
 on:
   push:
   pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check prototype files
-        shell: bash
-        run: |
-          if [[ -f qa_static.py ]]; then
-            python3 qa_static.py
-          else
-            echo 'Prototype files not uploaded yet; static QA pending.'
-          fi
+      - name: Install Node.js for JavaScript syntax checks
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run HTML and JavaScript static checks
+        run: python3 qa_static.py
