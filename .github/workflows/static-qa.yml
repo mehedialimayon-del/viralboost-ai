@@ -1,0 +1,17 @@
+name: Static QA
+on:
+  push:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check prototype files
+        shell: bash
+        run: |
+          if [[ -f qa_static.py ]]; then
+            python3 qa_static.py
+          else
+            echo 'Prototype files not uploaded yet; static QA pending.'
+          fi
